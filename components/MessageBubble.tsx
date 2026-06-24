@@ -12,16 +12,16 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
 
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} animate-fade-in`}>
-      <div className={`max-w-[80%] ${isUser ? 'order-2' : 'order-1'}`}>
+      <div className={`max-w-[85%] sm:max-w-[80%] md:max-w-[75%] ${isUser ? 'order-2' : 'order-1'}`}>
         {/* 消息气泡 */}
         <div
-          className={`px-4 py-3 rounded-2xl shadow-md ${
+          className={`px-3 py-2 md:px-4 md:py-3 rounded-2xl shadow-md ${
             isUser
               ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-tr-none'
               : 'bg-white text-gray-800 rounded-tl-none border border-amber-200'
           }`}
         >
-          <p className="text-sm sm:text-base whitespace-pre-wrap">{message.content}</p>
+          <p className="text-sm md:text-base whitespace-pre-wrap break-words">{message.content}</p>
         </div>
 
         {/* 时间戳 */}
