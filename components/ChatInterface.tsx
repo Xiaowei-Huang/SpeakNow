@@ -97,9 +97,9 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
   const showSummaryButton = conversation.totalRounds >= 3 && !showSummary;
 
   return (
-    <div className="flex flex-col h-[calc(100vh-180px)] md:h-[calc(100vh-200px)]">
+    <div className="flex flex-col h-[calc(100vh-220px)] md:h-[calc(100vh-240px)]">
       {/* 对话区域 */}
-      <div className="flex-1 overflow-y-auto mb-3 md:mb-4 space-y-3 md:space-y-4 px-1">
+      <div className="flex-1 overflow-y-auto space-y-3 md:space-y-4 px-1 flex flex-col">
         {conversation.messages.length === 0 && (
           <div className="text-center py-8 md:py-12">
             <div className="text-5xl md:text-6xl mb-3 md:mb-4">💭</div>
@@ -136,6 +136,9 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
         )}
 
         <div ref={messagesEndRef} />
+
+        {/* 弹性空间 - 当没有对话时将输入框推到中间 */}
+        {conversation.messages.length === 0 && <div className="flex-1" />}
       </div>
 
       {/* 总结按钮 */}
@@ -182,6 +185,3 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
           </button>
         </div>
       </div>
-    </div>
-  );
-}
