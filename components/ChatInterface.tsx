@@ -185,3 +185,6 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
           </button>
         </div>
       </div>
+    </div>
+  );
+}
