@@ -10,7 +10,11 @@ const INSIGHTS_STORE = 'insights';
  */
 function openDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    // 检查是否在浏览器环境
+    if (typeof window === 'undefined' || !window.indexedDB) {
+      reject(new Error('IndexedDB is not available'));
+      return;
+    }
 
     request.onerror = () => reject(request.error);
     request.onsuccess = () => resolve(request.result);
