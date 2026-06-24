@@ -177,9 +177,9 @@ export default function HomeContent() {
             </div>
           )}
 
-          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center justify-between">
             {/* 标题部分 */}
-            <div className="flex-1">
+            <div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1">
                 今天聊啥 💭
               </h1>
@@ -189,9 +189,9 @@ export default function HomeContent() {
             </div>
 
             {/* 右侧信息栏 */}
-            <div className="flex items-center justify-between md:justify-end gap-2 sm:gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               {conversation.messages.length > 0 && (
-                <div className="text-left md:text-right">
+                <div className="text-right">
                   <div className="text-xs sm:text-sm text-orange-50">对话轮数</div>
                   <div className="text-2xl sm:text-3xl font-bold">{conversation.totalRounds}</div>
                 </div>
@@ -201,7 +201,7 @@ export default function HomeContent() {
                 href="/history"
                 className="px-3 py-2 sm:px-4 bg-white/20 hover:bg-white/30 rounded-lg transition-all text-white text-xs sm:text-sm whitespace-nowrap"
               >
-                📚 历史对话
+                📚 查看历史对话
               </Link>
             </div>
           </div>
