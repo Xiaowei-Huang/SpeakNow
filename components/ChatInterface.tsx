@@ -152,7 +152,7 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
 
       {/* 输入区域 */}
       <div className="bg-white rounded-xl md:rounded-2xl shadow-xl p-3 md:p-4 border border-amber-200">
-        <div className="flex items-end gap-2 md:gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
           {/* 语音录制按钮 */}
           <VoiceRecorder
             onTranscriptUpdate={handleTranscriptUpdate}
@@ -169,14 +169,14 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
             onKeyPress={(e) => e.key === 'Enter' && !isRecording && handleTextSend()}
             placeholder={isRecording ? "正在录音..." : "或者在这里输入文字..."}
             disabled={isLoading}
-            className="flex-1 px-3 md:px-4 py-2 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 disabled:bg-gray-100"
+            className="flex-1 px-3 md:px-4 py-2.5 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 disabled:bg-gray-100"
           />
 
           {/* 发送按钮 */}
           <button
             onClick={handleTextSend}
             disabled={!input.trim() || isLoading || isRecording}
-            className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-base bg-gradient-to-r from-amber-600 to-orange-500 text-white rounded-lg md:rounded-xl hover:from-amber-700 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all whitespace-nowrap"
+            className="px-4 md:px-6 py-2.5 md:py-3 text-sm md:text-base bg-gradient-to-r from-amber-600 to-orange-500 text-white rounded-lg md:rounded-xl hover:from-amber-700 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all whitespace-nowrap"
           >
             发送
           </button>
