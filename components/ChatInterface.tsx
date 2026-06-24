@@ -97,16 +97,16 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
   const showSummaryButton = conversation.totalRounds >= 3 && !showSummary;
 
   return (
-    <div className="flex flex-col h-[calc(100vh-200px)]">
+    <div className="flex flex-col h-[calc(100vh-180px)] md:h-[calc(100vh-200px)]">
       {/* 对话区域 */}
-      <div className="flex-1 overflow-y-auto mb-4 space-y-4">
+      <div className="flex-1 overflow-y-auto mb-3 md:mb-4 space-y-3 md:space-y-4 px-1">
         {conversation.messages.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">💭</div>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+          <div className="text-center py-8 md:py-12">
+            <div className="text-5xl md:text-6xl mb-3 md:mb-4">💭</div>
+            <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2">
               今天想聊什么?
             </h2>
-            <p className="text-gray-600">
+            <p className="text-sm md:text-base text-gray-600 px-4">
               点击下方麦克风按钮开始语音输入,或使用文字输入
             </p>
           </div>
@@ -118,19 +118,19 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
         ))}
 
         {isLoading && (
-          <div className="flex items-center space-x-2 text-gray-500 pl-4">
+          <div className="flex items-center space-x-2 text-gray-500 pl-2 md:pl-4">
             <div className="flex space-x-1">
               <div className="w-2 h-2 bg-amber-600 rounded-full animate-bounce"></div>
               <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
               <div className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
             </div>
-            <span className="text-sm">AI 正在思考...</span>
+            <span className="text-xs md:text-sm">AI 正在思考...</span>
           </div>
         )}
 
         {/* 显示总结（如果用户点击了生成总结按钮） */}
         {showSummary && (
-          <div className="mt-6">
+          <div className="mt-4 md:mt-6">
             <SummaryView conversation={conversation} />
           </div>
         )}
@@ -140,10 +140,10 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
 
       {/* 总结按钮 */}
       {showSummaryButton && !isLoading && (
-        <div className="mb-4 text-center">
+        <div className="mb-3 md:mb-4 text-center">
           <button
             onClick={handleGenerateSummary}
-            className="px-6 py-2 bg-gradient-to-r from-amber-600 to-orange-500 text-white rounded-full hover:from-amber-700 hover:to-orange-600 transition-all shadow-lg hover:shadow-xl"
+            className="px-4 md:px-6 py-2 text-sm md:text-base bg-gradient-to-r from-amber-600 to-orange-500 text-white rounded-full hover:from-amber-700 hover:to-orange-600 transition-all shadow-lg hover:shadow-xl"
           >
             📝 生成对话总结
           </button>
@@ -151,8 +151,8 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
       )}
 
       {/* 输入区域 */}
-      <div className="bg-white rounded-2xl shadow-xl p-4 border border-amber-200">
-        <div className="flex items-center space-x-3">
+      <div className="bg-white rounded-xl md:rounded-2xl shadow-xl p-3 md:p-4 border border-amber-200">
+        <div className="flex items-end gap-2 md:gap-3">
           {/* 语音录制按钮 */}
           <VoiceRecorder
             onTranscriptUpdate={handleTranscriptUpdate}
@@ -169,14 +169,14 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
             onKeyPress={(e) => e.key === 'Enter' && !isRecording && handleTextSend()}
             placeholder={isRecording ? "正在录音..." : "或者在这里输入文字..."}
             disabled={isLoading}
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 disabled:bg-gray-100"
+            className="flex-1 px-3 md:px-4 py-2 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg md:rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 disabled:bg-gray-100"
           />
 
           {/* 发送按钮 */}
           <button
             onClick={handleTextSend}
             disabled={!input.trim() || isLoading || isRecording}
-            className="px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-500 text-white rounded-xl hover:from-amber-700 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            className="px-4 md:px-6 py-2 md:py-3 text-sm md:text-base bg-gradient-to-r from-amber-600 to-orange-500 text-white rounded-lg md:rounded-xl hover:from-amber-700 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all whitespace-nowrap"
           >
             发送
           </button>
