@@ -151,55 +151,57 @@ export default function HomeContent() {
   return (
     <div className="min-h-screen bg-amber-50">
       {/* Header - 使用自定义橙黄色 RGB(255, 153, 0) */}
-      <div className="text-white py-6 shadow-xl border-b border-orange-400 relative overflow-hidden" style={{ background: 'linear-gradient(to bottom right, rgb(255, 153, 0), rgb(255, 140, 0))' }}>
+      <div className="text-white py-4 md:py-6 shadow-xl border-b border-orange-400 relative overflow-hidden" style={{ background: 'linear-gradient(to bottom right, rgb(255, 153, 0), rgb(255, 140, 0))' }}>
         {/* 装饰性光晕 */}
         <div className="absolute inset-0 opacity-15">
           <div className="absolute top-0 right-0 w-64 h-64 bg-orange-100 rounded-full blur-3xl transform translate-x-32 -translate-y-32"></div>
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-200 rounded-full blur-3xl transform -translate-x-48 translate-y-48"></div>
         </div>
 
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
+        <div className="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 relative z-10">
           {/* 继续对话提示 */}
           {continueId && conversation.messages.length > 0 && (
-            <div className="mb-4 bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2 flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <span className="text-sm">🔄 继续之前的对话</span>
+            <div className="mb-3 md:mb-4 bg-white/20 backdrop-blur-sm rounded-lg px-3 py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <div className="flex items-center space-x-2 flex-wrap">
+                <span className="text-xs sm:text-sm">🔄 继续之前的对话</span>
                 {conversation.summary && (
-                  <span className="text-sm font-semibold">「{conversation.summary}」</span>
+                  <span className="text-xs sm:text-sm font-semibold line-clamp-1">「{conversation.summary}」</span>
                 )}
               </div>
               <Link
                 href="/"
-                className="text-sm px-3 py-1 bg-white/20 hover:bg-white/30 rounded transition-all"
+                className="text-xs sm:text-sm px-3 py-1 bg-white/20 hover:bg-white/30 rounded transition-all whitespace-nowrap self-start sm:self-auto"
               >
                 开始新对话
               </Link>
             </div>
           )}
 
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-bold mb-2">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            {/* 标题部分 */}
+            <div className="flex-1">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1">
                 今天聊啥 💭
               </h1>
-              <p className="text-sm sm:text-base text-orange-50">
+              <p className="text-xs sm:text-sm md:text-base text-orange-50">
                 锻炼思考 · 沉淀观点 · 提升表达
               </p>
             </div>
 
-            <div className="flex items-center space-x-3">
+            {/* 右侧信息栏 */}
+            <div className="flex items-center justify-between md:justify-end gap-2 sm:gap-3">
               {conversation.messages.length > 0 && (
-                <div className="text-right">
-                  <div className="text-sm text-orange-50">对话轮数</div>
-                  <div className="text-3xl font-bold">{conversation.totalRounds}</div>
+                <div className="text-left md:text-right">
+                  <div className="text-xs sm:text-sm text-orange-50">对话轮数</div>
+                  <div className="text-2xl sm:text-3xl font-bold">{conversation.totalRounds}</div>
                 </div>
               )}
 
               <Link
                 href="/history"
-                className="px-4 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all text-white text-sm"
+                className="px-3 py-2 sm:px-4 bg-white/20 hover:bg-white/30 rounded-lg transition-all text-white text-xs sm:text-sm whitespace-nowrap"
               >
-                📚 查看历史对话
+                📚 历史对话
               </Link>
             </div>
           </div>
@@ -207,7 +209,7 @@ export default function HomeContent() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-4 md:py-8">
         <ChatInterface
           conversation={conversation}
           onAddMessage={addMessage}
