@@ -99,9 +99,9 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
   return (
     <div className="flex flex-col h-[calc(100vh-220px)] md:h-[calc(100vh-240px)]">
       {/* 对话区域 */}
-      <div className="flex-1 overflow-y-auto space-y-3 md:space-y-4 px-1 flex flex-col">
+      <div className="flex-1 overflow-y-auto space-y-3 md:space-y-4 px-1 flex flex-col justify-center">
         {conversation.messages.length === 0 && (
-          <div className="text-center py-8 md:py-12">
+          <div className="text-center">
             <div className="text-5xl md:text-6xl mb-3 md:mb-4">💭</div>
             <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-2">
               今天想聊什么?
@@ -113,9 +113,13 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
         )}
 
         {/* 显示所有消息 */}
-        {conversation.messages.map((message) => (
-          <MessageBubble key={message.id} message={message} />
-        ))}
+        {conversation.messages.length > 0 && (
+          <div className="space-y-3 md:space-y-4">
+            {conversation.messages.map((message) => (
+              <MessageBubble key={message.id} message={message} />
+            ))}
+          </div>
+        )}
 
         {isLoading && (
           <div className="flex items-center space-x-2 text-gray-500 pl-2 md:pl-4">
@@ -136,9 +140,6 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
         )}
 
         <div ref={messagesEndRef} />
-
-        {/* 弹性空间 - 当没有对话时将输入框推到中间 */}
-        {conversation.messages.length === 0 && <div className="flex-1" />}
       </div>
 
       {/* 总结按钮 */}
