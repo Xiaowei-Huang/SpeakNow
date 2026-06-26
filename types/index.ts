@@ -1,3 +1,6 @@
+// AI 模式类型
+export type AIMode = 'detailed' | 'concise';
+
 // 对话消息类型
 export interface Message {
   id: string;
@@ -18,6 +21,7 @@ export interface Conversation {
   depthScore?: number;
   improvementTips?: string[];
   messages: Message[];
+  aiMode?: AIMode; // 对话使用的AI模式
 }
 
 // 观点类型
