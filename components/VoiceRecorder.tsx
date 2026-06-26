@@ -46,10 +46,13 @@ export default function VoiceRecorder({ onTranscriptUpdate, onRecordingStateChan
     };
 
     recognition.onresult = (event: any) => {
+      if (isStoppingRef.current) return; // 如果正在停止，忽略新结果
+
       let finalTranscript = '';
       let interimTranscript = '';
 
-      for (let i = 0; i < event.results.length; i++) {
+      // 只处理从 event.resultIndex 开始的新结果，避免重复
+      for (let i = event.resultIndex; i < event.results.length; i++) {
         const transcriptPiece = event.results[i][0].transcript;
         if (event.results[i].isFinal) {
           finalTranscript += transcriptPiece;
@@ -58,31 +61,40 @@ export default function VoiceRecorder({ onTranscriptUpdate, onRecordingStateChan
         }
       }
 
+      // 累积最终识别的文字
       if (finalTranscript) {
         fullTranscriptRef.current += finalTranscript;
+        console.log('Final transcript added:', finalTranscript);
       }
 
-      // 拼接：原有文字 + 语音识别的完整文字 + 临时文字
+      // 拼接：原有文字 + 已确认的语音文字 + 临时文字
       const currentText = startingInputRef.current + fullTranscriptRef.current + interimTranscript;
-      console.log('Transcript update:', currentText);
+      console.log('Current text:', currentText);
       onTranscriptUpdate(currentText);
     };
 
     recognition.onerror = (event: any) => {
       console.error('Speech recognition error:', event.error);
-      setError('语音识别失败: ' + event.error);
+
+      // 忽略 "no-speech" 和 "aborted" 错误（这些是正常的停止）
+      if (event.error !== 'no-speech' && event.error !== 'aborted') {
+        setError('语音识别失败: ' + event.error);
+      }
+
       setIsRecording(false);
       onRecordingStateChange(false);
+      recognitionRef.current = null;
     };
 
     recognition.onend = () => {
-      console.log('Recognition ended');
-      if (!isStoppingRef.current) {
-        // 如果不是用户主动停止，可能需要重启
-        console.log('Recognition ended unexpectedly');
-      }
+      console.log('Recognition ended, isStoppingRef:', isStoppingRef.current);
+
       setIsRecording(false);
       onRecordingStateChange(false);
+
+      // 清理引用和状态
+      recognitionRef.current = null;
+      isStoppingRef.current = false; // 重置停止标志
     };
 
     recognitionRef.current = recognition;
@@ -100,18 +112,26 @@ export default function VoiceRecorder({ onTranscriptUpdate, onRecordingStateChan
   const stopRecording = () => {
     console.log('Stopping recording...');
     isStoppingRef.current = true;
+
     if (recognitionRef.current) {
       try {
         recognitionRef.current.stop();
+        console.log('Recognition.stop() called');
       } catch (error) {
         console.error('Failed to stop recognition:', error);
+        // 即使停止失败，也要重置状态
+        setIsRecording(false);
+        onRecordingStateChange(false);
+        recognitionRef.current = null;
+        isStoppingRef.current = false;
       }
     }
   };
 
   // 点击按钮切换录音状态
   const handleClick = () => {
-    console.log('Button clicked, current state:', isRecording);
+    console.log('Button clicked, isRecording:', isRecording, 'recognitionRef:', !!recognitionRef.current);
+
     if (isRecording) {
       stopRecording();
     } else {
