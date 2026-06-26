@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Conversation } from '@/types';
+import { Conversation, AIMode } from '@/types';
 import MessageBubble from './MessageBubble';
 import VoiceRecorder from './VoiceRecorder';
 import SummaryView from './SummaryView';
@@ -10,9 +10,11 @@ interface ChatInterfaceProps {
   conversation: Conversation;
   onAddMessage: (content: string, role: 'user' | 'assistant', audioUrl?: string) => void;
   onEndConversation: () => void;
+  aiMode: AIMode;
+  onAIModeChange: (mode: AIMode) => void;
 }
 
-export default function ChatInterface({ conversation, onAddMessage, onEndConversation }: ChatInterfaceProps) {
+export default function ChatInterface({ conversation, onAddMessage, onEndConversation, aiMode, onAIModeChange }: ChatInterfaceProps) {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -49,7 +51,8 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           messages: messagesWithNewUser,
-          totalRounds: conversation.totalRounds
+          totalRounds: conversation.totalRounds,
+          aiMode: aiMode // 传递AI模式
         })
       });
 
@@ -153,6 +156,33 @@ export default function ChatInterface({ conversation, onAddMessage, onEndConvers
           </button>
         </div>
       )}
+
+      {/* AI模式切换 - 放在输入框上方 */}
+      <div className="mb-3 flex items-center justify-center gap-2">
+        <span className="text-xs sm:text-sm text-gray-600">AI 回复模式：</span>
+        <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
+          <button
+            onClick={() => onAIModeChange('detailed')}
+            className={`px-3 py-1 text-xs sm:text-sm rounded transition-all ${
+              aiMode === 'detailed'
+                ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold shadow'
+                : 'text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            详细回复
+          </button>
+          <button
+            onClick={() => onAIModeChange('concise')}
+            className={`px-3 py-1 text-xs sm:text-sm rounded transition-all ${
+              aiMode === 'concise'
+                ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold shadow'
+                : 'text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            简洁回复
+          </button>
+        </div>
+      </div>
 
       {/* 输入区域 */}
       <div className="bg-white rounded-xl md:rounded-2xl shadow-xl p-3 md:p-4 border border-amber-200">
