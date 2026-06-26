@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { Message, Conversation } from '@/types';
+import { Message, Conversation, AIMode } from '@/types';
 import { generateId, calculateRounds } from '@/lib/utils';
 import { saveConversation, getConversation } from '@/lib/db';
 import ChatInterface from '@/components/ChatInterface';
@@ -15,6 +15,7 @@ export default function HomeContent() {
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [showSummary, setShowSummary] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [aiMode, setAIMode] = useState<AIMode>('detailed'); // 默认详细模式
 
   // 初始化新对话
   const initNewConversation = () => {
@@ -22,7 +23,8 @@ export default function HomeContent() {
       id: generateId(),
       createdAt: new Date(),
       totalRounds: 0,
-      messages: []
+      messages: [],
+      aiMode: aiMode // 保存AI模式
     };
     setConversation(newConversation);
     setShowSummary(false);
@@ -35,6 +37,10 @@ export default function HomeContent() {
       const historyConv = await getConversation(id);
       if (historyConv) {
         setConversation(historyConv);
+        // 恢复对话的AI模式
+        if (historyConv.aiMode) {
+          setAIMode(historyConv.aiMode);
+        }
         setShowSummary(false);
       } else {
         // 如果找不到对话,创建新的
@@ -214,6 +220,8 @@ export default function HomeContent() {
           conversation={conversation}
           onAddMessage={addMessage}
           onEndConversation={endConversation}
+          aiMode={aiMode}
+          onAIModeChange={setAIMode}
         />
       </div>
     </div>
